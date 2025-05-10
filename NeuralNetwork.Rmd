@@ -182,18 +182,14 @@ Because the data are already complete, we can skip imputation entirely and jump 
 library(readxl)
 library(tidyverse)
 
-url  <- "https://raw.githubusercontent.com/Christina-tinaa/Telco_Customer_Churn/main/Telco_customer_churn.xlsx"
-tmp  <- tempfile(fileext = ".xlsx")          # makes a throw-away local file
-download.file(url, tmp, mode = "wb")         # mode = "wb" is vital on Windows
-df <- read_excel(tmp)
-
-
-
-
-
 # 2. Read the .xlsx
-#df <- readxl::read_excel(
- # "https://raw.githubusercontent.com/Christina-tinaa/Telco_Customer_Churn/main/Telco_customer_churn.xlsx")
+install.packages("openxlsx")
+library(openxlsx)
+
+# 1. Download-and-read in one step
+df <- read.xlsx(
+  "https://github.com/Christina-tinaa/Telco_Customer_Churn/raw/main/Telco_customer_churn.xlsx")
+#df
 # 3. Inspect structure and missing values
 #glimpse(df)
 #df %>% summarise(across(everything(), ~ sum(is.na(.))))
@@ -232,29 +228,29 @@ df <- df %>% rename(
   longitude           = Longitude,
   latitude            = Latitude,
   gender              = Gender,
-  senior_citizen      = `Senior Citizen`,   # "Yes"/"No"
+  senior_citizen      = `Senior.Citizen`,   # "Yes"/"No"
   partner             = Partner,
   dependents          = Dependents,
-  tenure_months       = `Tenure Months`,
-  phone_service       = `Phone Service`,
-  multiple_lines      = `Multiple Lines`,
-  internet_service    = `Internet Service`,
-  online_security     = `Online Security`,
-  online_backup       = `Online Backup`,
-  device_protection   = `Device Protection`,
-  tech_support        = `Tech Support`,
-  streaming_tv        = `Streaming TV`,
-  streaming_movies    = `Streaming Movies`,
+  tenure_months       = `Tenure.Months`,
+  phone_service       = `Phone.Service`,
+  multiple_lines      = `Multiple.Lines`,
+  internet_service    = `Internet.Service`,
+  online_security     = `Online.Security`,
+  online_backup       = `Online.Backup`,
+  device_protection   = `Device.Protection`,
+  tech_support        = `Tech.Support`,
+  streaming_tv        = `Streaming.TV`,
+  streaming_movies    = `Streaming.Movies`,
   contract            = Contract,
-  paperless_billing   = `Paperless Billing`,
-  payment_method      = `Payment Method`,
-  monthly_charges     = `Monthly Charges`,
-  total_charges       = `Total Charges`,    # character → numeric
-  churn_label         = `Churn Label`,
-  churn_value         = `Churn Value`,
-  churn_score         = `Churn Score`,
+  paperless_billing   = `Paperless.Billing`,
+  payment_method      = `Payment.Method`,
+  monthly_charges     = `Monthly.Charges`,
+  total_charges       = `Total.Charges`,    # character → numeric
+  churn_label         = `Churn.Label`,
+  churn_value         = `Churn.Value`,
+  churn_score         = `Churn.Score`,
   cltv                = CLTV,
-  churn_reason        = `Churn Reason`
+  churn_reason        = `Churn.Reason`
 )
 
 
@@ -826,7 +822,7 @@ cat("Optimal classification tuning: size =", best_clf$size,
 
 ## Final model training
 
-Armed with our optimal hyperparameters, we now refit each of the four neural architectures on the entire 70 % training set (train_tune), so they can “see” all available data before we evaluate on the hold‑out:
+Armed with our optimal hyperparameters, we now refit each of the four neural architectures on the entire 70% training set (train_tune), so they can “see” all available data before we evaluate on the hold‑out:
 
 **Perceptron Regression**
 
